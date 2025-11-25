@@ -60,19 +60,21 @@ export async function submitLead({
       }
     }
 
+    // Generate UUID client-side (avoids need for SELECT after INSERT)
+    const leadId = crypto.randomUUID();
+
     // Insert lead first
-    const { data: leadData, error: leadError } = await supabase
+    const { error: leadError } = await supabase
       .from('leads')
       .insert({
+        id: leadId,
         scheme_type: schemeType,
         applicant_name: applicantName,
         mobile_number: mobileNumber,
         ward_no: wardNo,
         form_data: cleanFormData,
         is_whatsapp_clicked: true,
-      })
-      .select('id')
-      .single();
+      });
 
     if (leadError) {
       console.error('Supabase error (lead):', leadError);
@@ -80,9 +82,9 @@ export async function submitLead({
     }
 
     // Insert documents if any
-    if (documents.length > 0 && leadData?.id) {
+    if (documents.length > 0) {
       const documentInserts = documents.map((doc) => ({
-        lead_id: leadData.id,
+        lead_id: leadId,
         document_type: doc.documentType,
         document_name: doc.fieldId.replace(/^doc_/, '').replace(/_/g, ' '),
         image_data: doc.data.base64,

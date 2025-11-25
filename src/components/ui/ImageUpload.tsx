@@ -1,6 +1,6 @@
 import { useState, useRef, ChangeEvent } from 'react';
 import { Camera, X, Upload, Loader2, CheckCircle } from 'lucide-react';
-import { compressImage, formatFileSize, isValidImageType, isWithinSizeLimit, CompressedImage } from '../../lib/imageUtils';
+import { compressImage, isValidImageType, isWithinSizeLimit, CompressedImage } from '../../lib/imageUtils';
 import { useLanguage } from '../../hooks/useLanguage';
 
 interface ImageUploadProps {
@@ -111,15 +111,6 @@ export default function ImageUpload({
           <div className="absolute top-2 left-2 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1">
             <CheckCircle className="w-3 h-3" />
             {t({ en: 'Uploaded', kn: 'ಅಪ್‌ಲೋಡ್ ಆಗಿದೆ' })}
-          </div>
-          {/* Size info */}
-          <div className="absolute bottom-2 left-2 bg-black/60 text-white px-2 py-1 rounded text-xs">
-            {formatFileSize(value.compressedSize)}
-            {value.originalSize > value.compressedSize && (
-              <span className="text-green-300 ml-1">
-                (-{Math.round((1 - value.compressedSize / value.originalSize) * 100)}%)
-              </span>
-            )}
           </div>
           {/* Remove button */}
           <button
