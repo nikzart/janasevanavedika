@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" fill="none">
+  <rect width="192" height="192" fill="#1E40AF" rx="24"/>
+  <circle cx="96" cy="80" r="45" fill="#FF9933"/>
+  <path d="M96 50 L96 95 M75 70 L96 95 L117 70 M80 95 L96 120 L112 95" stroke="white" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <text x="96" y="165" text-anchor="middle" fill="white" font-size="24" font-weight="bold" font-family="sans-serif">JANASEVA</text>
+</svg>
