@@ -29,14 +29,9 @@ export default function Header() {
             </p>
           </div>
 
-          {/* Right: Language Toggle + Avatar */}
-          <div className="flex items-center gap-2">
+          {/* Right: Language Toggle */}
+          <div className="flex items-center">
             <LanguageToggle />
-            <div className="flex-shrink-0">
-              <div className="h-11 w-11 rounded-full bg-gradient-to-br from-action via-primary to-success flex items-center justify-center text-white font-bold text-sm shadow-md ring-2 ring-white transition-transform hover:scale-105">
-                RU
-              </div>
-            </div>
           </div>
         </div>
       </div>

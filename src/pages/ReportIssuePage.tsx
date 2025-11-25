@@ -6,7 +6,6 @@ import { submitIssue, IssueFormData } from '../lib/issueApi';
 import { sendIssueToWhatsApp } from '../lib/issueWhatsapp';
 import Header from '../components/Header';
 import IssueForm from '../components/IssueForm';
-import BottomNavbar from '../components/BottomNavbar';
 
 export default function ReportIssuePage() {
   const { t } = useLanguage();
@@ -53,7 +52,6 @@ export default function ReportIssuePage() {
             {t({ en: 'Back to Home', kn: 'ಮುಖಪುಟಕ್ಕೆ ಹಿಂತಿರುಗಿ' })}
           </Link>
         </main>
-        <BottomNavbar />
       </div>
     );
   }
@@ -90,8 +88,6 @@ export default function ReportIssuePage() {
           <IssueForm onSubmit={handleSubmit} isSubmitting={isSubmitting} />
         </div>
       </main>
-
-      <BottomNavbar />
     </div>
   );
 }

@@ -8,7 +8,6 @@ import Header from '../components/Header';
 import SchemeCard from '../components/SchemeCard';
 import SchemeForm from '../components/SchemeForm';
 import BottomSheet from '../components/ui/BottomSheet';
-import BottomNavbar from '../components/BottomNavbar';
 
 export default function SchemesPage() {
   const { t } = useLanguage();
@@ -103,8 +102,6 @@ export default function SchemesPage() {
           />
         )}
       </BottomSheet>
-
-      <BottomNavbar />
     </div>
   );
 }
