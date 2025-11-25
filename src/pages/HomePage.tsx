@@ -28,7 +28,7 @@ export default function HomePage() {
             {t({ en: 'Dr B Ravi', kn: 'ಡಾ. ಬಿ ರವಿ' })}
           </h2>
           <p className="text-slate-600 text-center mt-1">
-            {t({ en: 'Ulsoor Constituency', kn: 'ಉಳ್ಸೂರು ಕ್ಷೇತ್ರ' })}
+            {t({ en: 'President, Minority Block Domlur & Govt. of Karnataka Guarantee Scheme Member, Jogupalya', kn: 'ಅಧ್ಯಕ್ಷರು, ಅಲ್ಪಸಂಖ್ಯಾತ ಬ್ಲಾಕ್ ದೊಮ್ಮಲೂರು & ಕರ್ನಾಟಕ ಸರ್ಕಾರ ಖಾತರಿ ಯೋಜನೆ ಸದಸ್ಯರು, ಜೋಗುಪಾಳ್ಯ' })}
           </p>
           <p className="text-xl font-semibold text-primary mt-4 text-center">
             {t({

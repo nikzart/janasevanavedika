@@ -25,7 +25,7 @@ export default function Header() {
               {t({ en: 'B Ravi Janaseva Vedike', kn: 'ಬಿ ರವಿ ಜನಸೇವಾ ವೇದಿಕೆ' })}
             </h1>
             <p className="text-[10px] text-slate-500 mt-0.5 hidden sm:block">
-              {t({ en: 'Ulsoor Constituency', kn: 'ಉಳ್ಸೂರು ಕ್ಷೇತ್ರ' })}
+              {t({ en: 'President, Minority Block Domlur & Govt. of Karnataka Guarantee Scheme Member, Jogupalya', kn: 'ಅಧ್ಯಕ್ಷರು, ಅಲ್ಪಸಂಖ್ಯಾತ ಬ್ಲಾಕ್ ದೊಮ್ಮಲೂರು & ಕರ್ನಾಟಕ ಸರ್ಕಾರ ಖಾತರಿ ಯೋಜನೆ ಸದಸ್ಯರು, ಜೋಗುಪಾಳ್ಯ' })}
             </p>
           </div>
 
