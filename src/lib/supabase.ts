@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
-import { SchemeType, LeadFormData } from '../types';
+import { SchemeType, LeadFormData, DocumentUpload } from '../types';
+import { getDocumentTypeFromFieldId } from './imageUtils';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
@@ -20,6 +21,12 @@ interface SubmitLeadParams {
   wardNo?: string;
 }
 
+interface DocumentData {
+  fieldId: string;
+  documentType: string;
+  data: DocumentUpload;
+}
+
 export async function submitLead({
   schemeType,
   applicantName,
@@ -35,18 +42,64 @@ export async function submitLead({
   }
 
   try {
-    const { error } = await supabase.from('leads').insert({
-      scheme_type: schemeType,
-      applicant_name: applicantName,
-      mobile_number: mobileNumber,
-      ward_no: wardNo,
-      form_data: formData,
-      is_whatsapp_clicked: true,
-    });
+    // Separate documents from regular form data
+    const documents: DocumentData[] = [];
+    const cleanFormData: LeadFormData = {};
 
-    if (error) {
-      console.error('Supabase error:', error);
-      return { success: false, error: error.message };
+    for (const [key, value] of Object.entries(formData)) {
+      if (key.startsWith('doc_') && value && typeof value === 'object' && 'base64' in value) {
+        // This is a document upload
+        documents.push({
+          fieldId: key,
+          documentType: getDocumentTypeFromFieldId(key),
+          data: value as DocumentUpload,
+        });
+      } else {
+        // Regular form field
+        cleanFormData[key] = value;
+      }
+    }
+
+    // Insert lead first
+    const { data: leadData, error: leadError } = await supabase
+      .from('leads')
+      .insert({
+        scheme_type: schemeType,
+        applicant_name: applicantName,
+        mobile_number: mobileNumber,
+        ward_no: wardNo,
+        form_data: cleanFormData,
+        is_whatsapp_clicked: true,
+      })
+      .select('id')
+      .single();
+
+    if (leadError) {
+      console.error('Supabase error (lead):', leadError);
+      return { success: false, error: leadError.message };
+    }
+
+    // Insert documents if any
+    if (documents.length > 0 && leadData?.id) {
+      const documentInserts = documents.map((doc) => ({
+        lead_id: leadData.id,
+        document_type: doc.documentType,
+        document_name: doc.fieldId.replace(/^doc_/, '').replace(/_/g, ' '),
+        image_data: doc.data.base64,
+        file_size: doc.data.originalSize,
+        compressed_size: doc.data.compressedSize,
+        mime_type: doc.data.mimeType,
+      }));
+
+      const { error: docError } = await supabase
+        .from('lead_documents')
+        .insert(documentInserts);
+
+      if (docError) {
+        console.error('Supabase error (documents):', docError);
+        // Don't fail the whole submission if documents fail
+        // The lead is already saved
+      }
     }
 
     return { success: true };

@@ -73,6 +73,30 @@ export const schemes: Scheme[] = [
           { value: 'no', label: { en: 'No', kn: 'ಇಲ್ಲ' } },
         ],
       },
+      {
+        id: 'doc_aadhaar_wife',
+        type: 'image',
+        label: { en: 'Aadhaar Card (Wife)', kn: 'ಆಧಾರ್ ಕಾರ್ಡ್ (ಪತ್ನಿ)' },
+        required: true,
+      },
+      {
+        id: 'doc_aadhaar_husband',
+        type: 'image',
+        label: { en: 'Aadhaar Card (Husband)', kn: 'ಆಧಾರ್ ಕಾರ್ಡ್ (ಪತಿ)' },
+        required: true,
+      },
+      {
+        id: 'doc_ration_card',
+        type: 'image',
+        label: { en: 'Ration Card', kn: 'ರೇಷನ್ ಕಾರ್ಡ್' },
+        required: true,
+      },
+      {
+        id: 'doc_bank_passbook',
+        type: 'image',
+        label: { en: 'Bank Passbook', kn: 'ಬ್ಯಾಂಕ್ ಪಾಸ್‌ಬುಕ್' },
+        required: true,
+      },
     ],
     whatsappTemplate: `#GL - New Request
 ನಮಸ್ಕಾರ, ಗೃಹ ಲಕ್ಷ್ಮಿ ಯೋಜನೆಗೆ ನನ್ನ ವಿವರಗಳು:
@@ -152,6 +176,24 @@ export const schemes: Scheme[] = [
         placeholder: { en: '10-digit mobile number', kn: '10 ಅಂಕಿ ಮೊಬೈಲ್ ಸಂಖ್ಯೆ' },
         required: true,
         validation: { minLength: 10, maxLength: 10 },
+      },
+      {
+        id: 'doc_electricity_bill',
+        type: 'image',
+        label: { en: 'Electricity Bill', kn: 'ವಿದ್ಯುತ್ ಬಿಲ್' },
+        required: true,
+      },
+      {
+        id: 'doc_aadhaar',
+        type: 'image',
+        label: { en: 'Aadhaar Card', kn: 'ಆಧಾರ್ ಕಾರ್ಡ್' },
+        required: true,
+      },
+      {
+        id: 'doc_tenancy_agreement',
+        type: 'image',
+        label: { en: 'Tenancy Agreement (if Tenant)', kn: 'ಬಾಡಿಗೆ ಕರಾರು ಪತ್ರ (ಬಾಡಿಗೆದಾರರಾಗಿದ್ದರೆ)' },
+        required: false,
       },
     ],
     whatsappTemplate: `#GJ - New Request
@@ -238,6 +280,30 @@ export const schemes: Scheme[] = [
         placeholder: { en: 'Enter USN or registration number', kn: 'USN ಅಥವಾ ನೋಂದಣಿ ಸಂಖ್ಯೆ ನಮೂದಿಸಿ' },
         required: true,
       },
+      {
+        id: 'doc_degree_certificate',
+        type: 'image',
+        label: { en: 'Degree/Diploma Certificate', kn: 'ಪದವಿ/ಡಿಪ್ಲೊಮಾ ಪ್ರಮಾಣಪತ್ರ' },
+        required: true,
+      },
+      {
+        id: 'doc_tc',
+        type: 'image',
+        label: { en: 'Transfer Certificate (TC)', kn: 'ವರ್ಗಾವಣೆ ಪತ್ರ (TC)' },
+        required: true,
+      },
+      {
+        id: 'doc_aadhaar',
+        type: 'image',
+        label: { en: 'Aadhaar Card', kn: 'ಆಧಾರ್ ಕಾರ್ಡ್' },
+        required: true,
+      },
+      {
+        id: 'doc_bank_passbook',
+        type: 'image',
+        label: { en: 'Bank Passbook', kn: 'ಬ್ಯಾಂಕ್ ಪಾಸ್‌ಬುಕ್' },
+        required: true,
+      },
     ],
     whatsappTemplate: `#YN - New Request
 ನಮಸ್ಕಾರ, ಯುವ ನಿಧಿ ಭತ್ಯೆಗೆ ವಿವರಗಳು:
@@ -308,6 +374,18 @@ export const schemes: Scheme[] = [
         type: 'checkbox',
         label: { en: 'I have ID proof (Aadhaar/Voter ID)', kn: 'ಗುರುತಿನ ಚೀಟಿ ಇದೆ (ಆಧಾರ್/ಮತದಾರರ ID)' },
         required: false,
+      },
+      {
+        id: 'doc_id_proof',
+        type: 'image',
+        label: { en: 'Aadhaar Card / Voter ID', kn: 'ಆಧಾರ್ ಕಾರ್ಡ್ / ಮತದಾರರ ID' },
+        required: true,
+      },
+      {
+        id: 'doc_passport_photo',
+        type: 'image',
+        label: { en: 'Passport Size Photo', kn: 'ಪಾಸ್‌ಪೋರ್ಟ್ ಅಳತೆಯ ಭಾವಚಿತ್ರ' },
+        required: true,
       },
     ],
     whatsappTemplate: `#SH - Smart Card
@@ -389,6 +467,18 @@ export const schemes: Scheme[] = [
           { value: 'yes', label: { en: 'Yes', kn: 'ಹೌದು' } },
           { value: 'no', label: { en: 'No', kn: 'ಇಲ್ಲ' } },
         ],
+      },
+      {
+        id: 'doc_ration_card',
+        type: 'image',
+        label: { en: 'Ration Card', kn: 'ರೇಷನ್ ಕಾರ್ಡ್' },
+        required: true,
+      },
+      {
+        id: 'doc_aadhaar',
+        type: 'image',
+        label: { en: 'Aadhaar Card', kn: 'ಆಧಾರ್ ಕಾರ್ಡ್' },
+        required: true,
       },
     ],
     whatsappTemplate: `#AB - Grievance

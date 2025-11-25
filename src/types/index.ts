@@ -9,7 +9,7 @@ export interface BilingualText {
 
 export interface FormField {
   id: string;
-  type: 'text' | 'number' | 'select' | 'radio' | 'checkbox' | 'textarea';
+  type: 'text' | 'number' | 'select' | 'radio' | 'checkbox' | 'textarea' | 'image';
   label: BilingualText;
   placeholder?: BilingualText;
   required?: boolean;
@@ -19,6 +19,13 @@ export interface FormField {
     minLength?: number;
     maxLength?: number;
   };
+}
+
+export interface DocumentUpload {
+  base64: string;
+  originalSize: number;
+  compressedSize: number;
+  mimeType: string;
 }
 
 export interface Scheme {
@@ -40,7 +47,7 @@ export interface Scheme {
 }
 
 export interface LeadFormData {
-  [key: string]: string | boolean;
+  [key: string]: string | boolean | DocumentUpload | null;
 }
 
 export interface Lead {

@@ -55,3 +55,49 @@ CREATE POLICY "Enable delete for authenticated"
   ON leads
   FOR DELETE
   USING (auth.role() = 'authenticated');
+
+-- ============================================
+-- Lead Documents Table (for uploaded documents)
+-- ============================================
+
+CREATE TABLE IF NOT EXISTS lead_documents (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  lead_id UUID NOT NULL REFERENCES leads(id) ON DELETE CASCADE,
+
+  -- Document Info
+  document_type TEXT NOT NULL,      -- 'aadhaar_wife', 'ration_card', 'bank_passbook', etc.
+  document_name TEXT NOT NULL,      -- Display name (for dashboard)
+
+  -- Image Data
+  image_data TEXT NOT NULL,         -- Base64 encoded image
+  file_size INTEGER,                -- Original file size in bytes
+  compressed_size INTEGER,          -- Compressed size in bytes
+  mime_type TEXT DEFAULT 'image/jpeg',
+
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- Indexes for dashboard queries
+CREATE INDEX IF NOT EXISTS idx_lead_documents_lead_id ON lead_documents(lead_id);
+CREATE INDEX IF NOT EXISTS idx_lead_documents_type ON lead_documents(document_type);
+
+-- Enable Row Level Security
+ALTER TABLE lead_documents ENABLE ROW LEVEL SECURITY;
+
+-- Policy: Allow ANYONE (Anonymous) to INSERT (Submit documents with form)
+CREATE POLICY "Enable insert for everyone"
+  ON lead_documents
+  FOR INSERT
+  WITH CHECK (true);
+
+-- Policy: Allow ONLY AUTHENTICATED users (Admins) to READ
+CREATE POLICY "Enable read for authenticated"
+  ON lead_documents
+  FOR SELECT
+  USING (auth.role() = 'authenticated');
+
+-- Policy: Allow ONLY AUTHENTICATED users (Admins) to DELETE
+CREATE POLICY "Enable delete for authenticated"
+  ON lead_documents
+  FOR DELETE
+  USING (auth.role() = 'authenticated');

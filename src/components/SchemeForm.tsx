@@ -8,6 +8,8 @@ import Select from './ui/Select';
 import RadioGroup from './ui/RadioGroup';
 import Checkbox from './ui/Checkbox';
 import Textarea from './ui/Textarea';
+import ImageUpload from './ui/ImageUpload';
+import { CompressedImage } from '../lib/imageUtils';
 
 interface SchemeFormProps {
   scheme: Scheme;
@@ -27,6 +29,8 @@ export default function SchemeForm({ scheme, onSubmit, isSubmitting }: SchemeFor
     scheme.fields.forEach((field) => {
       if (field.type === 'checkbox') {
         initialData[field.id] = false;
+      } else if (field.type === 'image') {
+        initialData[field.id] = null;
       } else if (field.type === 'select' && field.options?.length) {
         initialData[field.id] = '';
       } else {
@@ -37,7 +41,7 @@ export default function SchemeForm({ scheme, onSubmit, isSubmitting }: SchemeFor
     setErrors({});
   }, [scheme]);
 
-  const handleChange = (fieldId: string, value: string | boolean) => {
+  const handleChange = (fieldId: string, value: string | boolean | CompressedImage | null) => {
     setFormData((prev) => ({ ...prev, [fieldId]: value }));
     // Clear error when user types
     if (errors[fieldId]) {
@@ -51,8 +55,15 @@ export default function SchemeForm({ scheme, onSubmit, isSubmitting }: SchemeFor
     scheme.fields.forEach((field) => {
       const value = formData[field.id];
 
-      if (field.required && (value === '' || value === undefined)) {
-        newErrors[field.id] = t({ en: 'This field is required', kn: 'ಈ ಕ್ಷೇತ್ರ ಅಗತ್ಯವಿದೆ' });
+      // Check required fields
+      if (field.required) {
+        if (field.type === 'image') {
+          if (!value || value === null) {
+            newErrors[field.id] = t({ en: 'Please upload this document', kn: 'ದಯವಿಟ್ಟು ಈ ದಾಖಲೆಯನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಿ' });
+          }
+        } else if (value === '' || value === undefined || value === null) {
+          newErrors[field.id] = t({ en: 'This field is required', kn: 'ಈ ಕ್ಷೇತ್ರ ಅಗತ್ಯವಿದೆ' });
+        }
       }
 
       if (field.validation && typeof value === 'string') {
@@ -160,6 +171,19 @@ export default function SchemeForm({ scheme, onSubmit, isSubmitting }: SchemeFor
             placeholder={placeholder}
             value={formData[field.id] as string || ''}
             onChange={(e) => handleChange(field.id, e.target.value)}
+            required={field.required}
+            error={error}
+          />
+        );
+
+      case 'image':
+        return (
+          <ImageUpload
+            key={field.id}
+            id={field.id}
+            label={label}
+            value={formData[field.id] as CompressedImage | null}
+            onChange={(data) => handleChange(field.id, data)}
             required={field.required}
             error={error}
           />
