@@ -1,6 +1,8 @@
-import { LeadStatus } from '../../lib/adminApi';
+import { LeadStatus, IssueStatus } from '../../lib/adminApi';
 
-const statusConfig: Record<LeadStatus, { label: string; className: string }> = {
+type StatusType = LeadStatus | IssueStatus;
+
+const statusConfig: Record<string, { label: string; className: string }> = {
   pending: {
     label: 'Pending',
     className: 'bg-amber-100 text-amber-800',
@@ -21,10 +23,18 @@ const statusConfig: Record<LeadStatus, { label: string; className: string }> = {
     label: 'Rejected',
     className: 'bg-red-100 text-red-800',
   },
+  resolved: {
+    label: 'Resolved',
+    className: 'bg-green-100 text-green-800',
+  },
+  closed: {
+    label: 'Closed',
+    className: 'bg-slate-100 text-slate-800',
+  },
 };
 
 interface StatusBadgeProps {
-  status: LeadStatus;
+  status: StatusType;
   size?: 'sm' | 'md';
 }
 

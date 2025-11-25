@@ -232,3 +232,195 @@ export function downloadCSV(leads: Lead[], filename = 'leads.csv') {
   link.click();
   URL.revokeObjectURL(link.href);
 }
+
+// ============================================
+// Issue-related types and functions
+// ============================================
+
+export type IssueStatus = 'pending' | 'reviewing' | 'resolved' | 'closed';
+
+export interface Issue {
+  id: string;
+  created_at: string;
+  reporter_name: string;
+  mobile_number: string;
+  category: string;
+  custom_category: string | null;
+  description: string;
+  location_text: string;
+  latitude: number | null;
+  longitude: number | null;
+  status: IssueStatus;
+  admin_notes: string | null;
+  processed_at: string | null;
+  processed_by: string | null;
+}
+
+export interface IssueDocument {
+  id: string;
+  issue_id: string;
+  document_type: string;
+  document_name: string;
+  image_data: string;
+  file_size: number;
+  mime_type: string;
+  created_at: string;
+}
+
+export interface IssueFilters {
+  category?: string;
+  status?: IssueStatus;
+  search?: string;
+  dateFrom?: string;
+  dateTo?: string;
+}
+
+export async function fetchIssues(filters: IssueFilters = {}): Promise<Issue[]> {
+  if (!supabase) return [];
+
+  let query = supabase
+    .from('issues')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (filters.category && filters.category !== 'all') {
+    query = query.eq('category', filters.category);
+  }
+
+  if (filters.status) {
+    query = query.eq('status', filters.status);
+  }
+
+  if (filters.search) {
+    query = query.or(`reporter_name.ilike.%${filters.search}%,mobile_number.ilike.%${filters.search}%,location_text.ilike.%${filters.search}%`);
+  }
+
+  if (filters.dateFrom) {
+    query = query.gte('created_at', filters.dateFrom);
+  }
+
+  if (filters.dateTo) {
+    query = query.lte('created_at', filters.dateTo + 'T23:59:59');
+  }
+
+  const { data, error } = await query;
+
+  if (error) {
+    console.error('Error fetching issues:', error);
+    return [];
+  }
+
+  return (data || []) as Issue[];
+}
+
+export async function fetchIssueById(id: string): Promise<{ issue: Issue; documents: IssueDocument[] } | null> {
+  if (!supabase) return null;
+
+  const [issueResult, docsResult] = await Promise.all([
+    supabase.from('issues').select('*').eq('id', id).single(),
+    supabase.from('issue_documents').select('*').eq('issue_id', id),
+  ]);
+
+  if (issueResult.error || !issueResult.data) {
+    console.error('Error fetching issue:', issueResult.error);
+    return null;
+  }
+
+  return {
+    issue: issueResult.data as Issue,
+    documents: (docsResult.data || []) as IssueDocument[],
+  };
+}
+
+export async function updateIssueStatus(
+  id: string,
+  status: IssueStatus,
+  notes?: string
+): Promise<boolean> {
+  if (!supabase) return false;
+
+  const updates: Partial<Issue> = {
+    status,
+    admin_notes: notes || null,
+  };
+
+  if (status === 'resolved' || status === 'closed') {
+    updates.processed_at = new Date().toISOString();
+  }
+
+  const { error } = await supabase
+    .from('issues')
+    .update(updates)
+    .eq('id', id);
+
+  if (error) {
+    console.error('Error updating issue status:', error);
+    return false;
+  }
+
+  return true;
+}
+
+export async function getIssueAnalytics(): Promise<{
+  total: number;
+  byCategory: { category: string; count: number }[];
+  byStatus: { status: IssueStatus; count: number }[];
+  byDate: { date: string; count: number }[];
+  resolvedCount: number;
+}> {
+  if (!supabase) {
+    return { total: 0, byCategory: [], byStatus: [], byDate: [], resolvedCount: 0 };
+  }
+
+  const { data: issues, error } = await supabase
+    .from('issues')
+    .select('id, category, status, created_at');
+
+  if (error || !issues) {
+    console.error('Error fetching issue analytics:', error);
+    return { total: 0, byCategory: [], byStatus: [], byDate: [], resolvedCount: 0 };
+  }
+
+  const categoryCount: Record<string, number> = {};
+  const statusCount: Record<string, number> = {};
+  const dateCount: Record<string, number> = {};
+  let resolvedCount = 0;
+
+  issues.forEach((issue) => {
+    categoryCount[issue.category] = (categoryCount[issue.category] || 0) + 1;
+
+    const status = issue.status || 'pending';
+    statusCount[status] = (statusCount[status] || 0) + 1;
+
+    if (status === 'resolved') {
+      resolvedCount++;
+    }
+
+    // By date
+    const date = new Date(issue.created_at).toISOString().split('T')[0];
+    dateCount[date] = (dateCount[date] || 0) + 1;
+  });
+
+  const byCategory = Object.entries(categoryCount).map(([category, count]) => ({ category, count }));
+  const byStatus = Object.entries(statusCount).map(([status, count]) => ({
+    status: status as IssueStatus,
+    count,
+  }));
+
+  // Get last 30 days for date chart
+  const last30Days: { date: string; count: number }[] = [];
+  for (let i = 29; i >= 0; i--) {
+    const date = new Date();
+    date.setDate(date.getDate() - i);
+    const dateStr = date.toISOString().split('T')[0];
+    last30Days.push({ date: dateStr, count: dateCount[dateStr] || 0 });
+  }
+
+  return {
+    total: issues.length,
+    byCategory,
+    byStatus,
+    byDate: last30Days,
+    resolvedCount,
+  };
+}

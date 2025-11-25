@@ -103,3 +103,102 @@ CREATE POLICY "Enable delete for authenticated"
   ON lead_documents
   FOR DELETE
   USING (auth.role() = 'authenticated');
+
+-- ============================================
+-- Issues Table (for citizen issue reports)
+-- ============================================
+
+CREATE TABLE IF NOT EXISTS issues (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  created_at TIMESTAMPTZ DEFAULT now(),
+
+  -- Reporter Info
+  reporter_name TEXT NOT NULL,
+  mobile_number TEXT NOT NULL,
+
+  -- Issue Details
+  category TEXT NOT NULL,          -- 'road', 'water', 'electricity', 'sanitation', 'streetlight', 'garbage', 'other'
+  custom_category TEXT,            -- If category is 'other'
+  description TEXT NOT NULL,
+
+  -- Location
+  location_text TEXT NOT NULL,     -- User-entered location description
+  latitude DECIMAL(10, 8),         -- GPS latitude
+  longitude DECIMAL(11, 8),        -- GPS longitude
+
+  -- Status Tracking
+  status TEXT DEFAULT 'pending',   -- 'pending', 'reviewing', 'resolved', 'closed'
+  admin_notes TEXT,
+  processed_at TIMESTAMPTZ,
+  processed_by TEXT
+);
+
+-- Indexes for common queries
+CREATE INDEX IF NOT EXISTS idx_issues_status ON issues(status);
+CREATE INDEX IF NOT EXISTS idx_issues_category ON issues(category);
+CREATE INDEX IF NOT EXISTS idx_issues_created_at ON issues(created_at DESC);
+
+-- Enable Row Level Security
+ALTER TABLE issues ENABLE ROW LEVEL SECURITY;
+
+-- Policy: Allow ANYONE (Anonymous) to INSERT
+CREATE POLICY "Enable insert for everyone"
+  ON issues
+  FOR INSERT
+  WITH CHECK (true);
+
+-- Policy: Allow ONLY AUTHENTICATED users (Admins) to READ
+CREATE POLICY "Enable read for authenticated"
+  ON issues
+  FOR SELECT
+  USING (auth.role() = 'authenticated');
+
+-- Policy: Allow ONLY AUTHENTICATED users (Admins) to UPDATE
+CREATE POLICY "Enable update for authenticated"
+  ON issues
+  FOR UPDATE
+  USING (auth.role() = 'authenticated');
+
+-- Policy: Allow ONLY AUTHENTICATED users (Admins) to DELETE
+CREATE POLICY "Enable delete for authenticated"
+  ON issues
+  FOR DELETE
+  USING (auth.role() = 'authenticated');
+
+-- ============================================
+-- Issue Documents Table (for uploaded photos)
+-- ============================================
+
+CREATE TABLE IF NOT EXISTS issue_documents (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  issue_id UUID NOT NULL REFERENCES issues(id) ON DELETE CASCADE,
+
+  -- Document Info
+  document_type TEXT NOT NULL,     -- 'issue_photo', 'aadhaar'
+  document_name TEXT NOT NULL,
+
+  -- Image Data
+  image_data TEXT,                 -- Base64 encoded image
+  file_size INTEGER,
+  mime_type TEXT DEFAULT 'image/jpeg',
+
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- Indexes
+CREATE INDEX IF NOT EXISTS idx_issue_documents_issue_id ON issue_documents(issue_id);
+
+-- Enable Row Level Security
+ALTER TABLE issue_documents ENABLE ROW LEVEL SECURITY;
+
+-- Policy: Allow ANYONE (Anonymous) to INSERT
+CREATE POLICY "Enable insert for everyone"
+  ON issue_documents
+  FOR INSERT
+  WITH CHECK (true);
+
+-- Policy: Allow ONLY AUTHENTICATED users (Admins) to READ
+CREATE POLICY "Enable read for authenticated"
+  ON issue_documents
+  FOR SELECT
+  USING (auth.role() = 'authenticated');

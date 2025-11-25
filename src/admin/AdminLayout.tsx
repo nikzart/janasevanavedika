@@ -1,11 +1,12 @@
 import { Navigate, Outlet, NavLink, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Users, LogOut, Menu, X, Loader2 } from 'lucide-react';
+import { LayoutDashboard, Users, AlertTriangle, LogOut, Menu, X, Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import { useAdmin } from './AdminContext';
 
 const navItems = [
   { path: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { path: '/admin/leads', label: 'Leads', icon: Users },
+  { path: '/admin/issues', label: 'Issues', icon: AlertTriangle },
 ];
 
 export default function AdminLayout() {

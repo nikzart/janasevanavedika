@@ -8,7 +8,7 @@ interface StatsCardProps {
     value: number;
     label: string;
   };
-  color?: 'blue' | 'green' | 'amber' | 'purple';
+  color?: 'blue' | 'green' | 'amber' | 'purple' | 'orange';
 }
 
 const colorClasses = {
@@ -16,6 +16,7 @@ const colorClasses = {
   green: 'bg-green-50 text-green-600',
   amber: 'bg-amber-50 text-amber-600',
   purple: 'bg-purple-50 text-purple-600',
+  orange: 'bg-orange-50 text-orange-600',
 };
 
 export default function StatsCard({ title, value, icon, trend, color = 'blue' }: StatsCardProps) {
