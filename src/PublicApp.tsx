@@ -98,13 +98,13 @@ export default function PublicApp() {
             className="text-2xl font-bold text-white text-center px-4 animate-fade-in-up"
             style={{ animationDelay: '0.3s' }}
           >
-            B Ravi Janaseva Vedika
+            B Ravi Janaseva Vedike
           </h1>
           <p
             className="text-white/80 text-sm mt-2 animate-fade-in-up"
             style={{ animationDelay: '0.5s' }}
           >
-            B Ravi Janaseva Vedike
+            ಬಿ ರವಿ ಜನಸೇವಾ ವೇದಿಕೆ
           </p>
 
           {/* Loading indicator */}

@@ -1,4 +1,4 @@
-# B Ravi Janaseva Vedika
+# B Ravi Janaseva Vedike
 
 A Progressive Web App (PWA) for Karnataka Guarantee Schemes lead generation. Citizens can learn about government schemes, fill application forms, and submit requests via WhatsApp.
 

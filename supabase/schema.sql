@@ -1,4 +1,4 @@
--- B Ravi Janaseva Vedika - Database Schema
+-- B Ravi Janaseva Vedike - Database Schema
 -- Run this in your Supabase SQL Editor
 
 -- Create leads table

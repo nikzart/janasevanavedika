@@ -22,7 +22,7 @@ export default function Header() {
           {/* Center: App Name */}
           <div className="flex-1 text-center px-3">
             <h1 className={`text-base md:text-lg font-bold text-primary leading-tight ${language === 'kn' ? 'font-kannada' : ''}`}>
-              {t({ en: 'B Ravi Janaseva Vedika', kn: 'ಬಿ ರವಿ ಜನಸೇವಾ ವೇದಿಕೆ' })}
+              {t({ en: 'B Ravi Janaseva Vedike', kn: 'ಬಿ ರವಿ ಜನಸೇವಾ ವೇದಿಕೆ' })}
             </h1>
             <p className="text-[10px] text-slate-500 mt-0.5 hidden sm:block">
               {t({ en: 'Ulsoor Constituency', kn: 'ಉಳ್ಸೂರು ಕ್ಷೇತ್ರ' })}

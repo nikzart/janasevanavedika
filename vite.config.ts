@@ -14,7 +14,7 @@ export default defineConfig({
       },
       includeAssets: ['congress-logo.svg', 'ravi-avatar.png'],
       manifest: {
-        name: 'B Ravi Janaseva Vedika',
+        name: 'B Ravi Janaseva Vedike',
         short_name: 'Janaseva',
         description: 'Apply for Karnataka Guarantee Schemes with B Ravi',
         theme_color: '#1E40AF',

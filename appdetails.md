@@ -1,4 +1,4 @@
-# **Master Project Specification: B Ravi Janaseva Vedika**
+# **Master Project Specification: B Ravi Janaseva Vedike**
 
 Version: 2.0  
 Target Audience: Developers, AI Coding Assistants (Claude Code/Cursor)  
@@ -7,7 +7,7 @@ Platform: Progressive Web App (PWA) \+ Responsive Admin Dashboard
 
 ## **1\. Executive Summary & Architecture**
 
-The **B Ravi Janaseva Vedika** is a dual-interface application designed to streamline the lead generation process for the 5 Karnataka Guarantee Schemes during an election campaign.
+The **B Ravi Janaseva Vedike** is a dual-interface application designed to streamline the lead generation process for the 5 Karnataka Guarantee Schemes during an election campaign.
 
 ### **Core Philosophy**
 
@@ -38,7 +38,7 @@ The app must leverage the PWA beforeinstallprompt event.
 * **Header:**  
   * Left: Congress Hand Logo.  
   * Right: Ravi Ulsoor Circular Avatar.  
-  * Center: "B Ravi Janaseva Vedika".  
+  * Center: "B Ravi Janaseva Vedike".  
 * **Hero Section:**  
   * Background: Subtle Congress/Tricolor gradient overlay or clean white.  
   * Text: "Namaskara, I am Ravi. Here to serve you. / ನಮಸ್ಕಾರ, ನಾನು ರವಿ. ನಿಮ್ಮ ಸೇವೆಗಾಗಿ."  
