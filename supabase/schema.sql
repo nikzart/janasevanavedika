@@ -16,8 +16,10 @@ CREATE TABLE IF NOT EXISTS leads (
   form_data JSONB NOT NULL,
 
   -- Status Tracking
-  status TEXT DEFAULT 'pending',  -- 'pending', 'processed', 'rejected'
+  status TEXT DEFAULT 'pending',  -- 'pending', 'reviewing', 'verified', 'processed', 'rejected'
   admin_notes TEXT,
+  processed_at TIMESTAMPTZ,
+  processed_by TEXT,
 
   -- WhatsApp Sync Check
   is_whatsapp_clicked BOOLEAN DEFAULT false
