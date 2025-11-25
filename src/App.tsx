@@ -13,6 +13,7 @@ import SchemesPage from './pages/SchemesPage';
 import ReportIssuePage from './pages/ReportIssuePage';
 import PageTransition from './components/PageTransition';
 import BottomNavbar from './components/BottomNavbar';
+import InstallBanner from './components/InstallBanner';
 
 const PUBLIC_ROUTES = ['/', '/schemes', '/report'];
 
@@ -68,6 +69,9 @@ function AnimatedRoutes() {
 
       {/* Bottom navbar outside AnimatePresence - stays fixed during page transitions */}
       {isPublicRoute && <BottomNavbar />}
+
+      {/* PWA Install Banner */}
+      {isPublicRoute && <InstallBanner />}
     </>
   );
 }

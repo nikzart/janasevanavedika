@@ -9,6 +9,9 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
+      devOptions: {
+        enabled: true
+      },
       includeAssets: ['congress-logo.svg', 'ravi-avatar.png'],
       manifest: {
         name: 'B Ravi Janaseva Vedika',
