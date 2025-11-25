@@ -1,13 +1,13 @@
 import { Search, X } from 'lucide-react';
 import { LeadFilters } from '../../lib/adminApi';
+import { SchemeIcon, schemeConfig } from './SchemeInfo';
 
 const schemes = [
   { value: 'all', label: 'All Schemes' },
-  { value: 'GL', label: 'Gruha Lakshmi' },
-  { value: 'GJ', label: 'Gruha Jyothi' },
-  { value: 'YN', label: 'Yuva Nidhi' },
-  { value: 'SH', label: 'Shakti' },
-  { value: 'AB', label: 'Anna Bhagya' },
+  ...Object.entries(schemeConfig).map(([key, config]) => ({
+    value: key,
+    label: config.name,
+  })),
 ];
 
 const statuses = [
@@ -51,17 +51,22 @@ export default function FilterBar({ filters, onFilterChange }: FilterBarProps) {
         </div>
 
         {/* Scheme filter */}
-        <select
-          value={filters.scheme || 'all'}
-          onChange={(e) => updateFilter('scheme', e.target.value === 'all' ? '' : e.target.value)}
-          className="px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary bg-white"
-        >
-          {schemes.map((s) => (
-            <option key={s.value} value={s.value}>
-              {s.label}
-            </option>
-          ))}
-        </select>
+        <div className="flex items-center gap-2">
+          {filters.scheme && filters.scheme !== 'all' && (
+            <SchemeIcon scheme={filters.scheme} size="sm" />
+          )}
+          <select
+            value={filters.scheme || 'all'}
+            onChange={(e) => updateFilter('scheme', e.target.value === 'all' ? '' : e.target.value)}
+            className="px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary bg-white"
+          >
+            {schemes.map((s) => (
+              <option key={s.value} value={s.value}>
+                {s.label}
+              </option>
+            ))}
+          </select>
+        </div>
 
         {/* Status filter */}
         <select

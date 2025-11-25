@@ -4,14 +4,7 @@ import { Download, Eye, RefreshCw, Loader2 } from 'lucide-react';
 import { fetchLeads, downloadCSV, Lead, LeadFilters } from '../lib/adminApi';
 import FilterBar from './components/FilterBar';
 import StatusBadge from './components/StatusBadge';
-
-const schemeNames: Record<string, string> = {
-  GL: 'Gruha Lakshmi',
-  GJ: 'Gruha Jyothi',
-  YN: 'Yuva Nidhi',
-  SH: 'Shakti',
-  AB: 'Anna Bhagya',
-};
+import { SchemeBadge } from './components/SchemeInfo';
 
 export default function LeadsList() {
   const [leads, setLeads] = useState<Lead[]>([]);
@@ -136,9 +129,7 @@ export default function LeadsList() {
                       {lead.mobile_number || 'N/A'}
                     </td>
                     <td className="px-4 py-3">
-                      <span className="text-sm font-medium text-slate-700">
-                        {schemeNames[lead.scheme_type] || lead.scheme_type}
-                      </span>
+                      <SchemeBadge scheme={lead.scheme_type} />
                     </td>
                     <td className="px-4 py-3">
                       <StatusBadge status={lead.status || 'pending'} />

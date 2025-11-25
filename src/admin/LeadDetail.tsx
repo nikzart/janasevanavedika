@@ -13,14 +13,7 @@ import {
 } from 'lucide-react';
 import { fetchLeadById, updateLeadStatus, Lead, LeadDocument, LeadStatus } from '../lib/adminApi';
 import StatusBadge from './components/StatusBadge';
-
-const schemeNames: Record<string, string> = {
-  GL: 'Gruha Lakshmi',
-  GJ: 'Gruha Jyothi',
-  YN: 'Yuva Nidhi',
-  SH: 'Shakti',
-  AB: 'Anna Bhagya',
-};
+import { SchemeBadge } from './components/SchemeInfo';
 
 const statusOptions: { value: LeadStatus; label: string }[] = [
   { value: 'pending', label: 'Pending' },
@@ -113,9 +106,9 @@ export default function LeadDetail() {
           <h1 className="text-2xl font-bold text-slate-900">
             {lead.applicant_name || 'Unnamed Lead'}
           </h1>
-          <p className="text-slate-500 text-sm">
-            {schemeNames[lead.scheme_type] || lead.scheme_type}
-          </p>
+          <div className="mt-1">
+            <SchemeBadge scheme={lead.scheme_type} />
+          </div>
         </div>
         <div className="ml-auto">
           <StatusBadge status={lead.status || 'pending'} size="md" />
