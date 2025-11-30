@@ -62,3 +62,16 @@ export interface Lead {
   admin_notes?: string;
   is_whatsapp_clicked: boolean;
 }
+
+export interface GalleryImage {
+  id: string;
+  created_at: string;
+  title_en: string;
+  title_kn: string;
+  image_data: string;
+  file_size: number | null;
+  compressed_size: number | null;
+  mime_type: string;
+  display_order: number;
+  is_active: boolean;
+}

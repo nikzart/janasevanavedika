@@ -8,14 +8,17 @@ import LeadsList from './admin/LeadsList';
 import LeadDetail from './admin/LeadDetail';
 import IssuesList from './admin/IssuesList';
 import IssueDetail from './admin/IssueDetail';
+import GalleryManager from './admin/GalleryManager';
 import HomePage from './pages/HomePage';
 import SchemesPage from './pages/SchemesPage';
 import ReportIssuePage from './pages/ReportIssuePage';
+import GalleryPage from './pages/GalleryPage';
+import LeadersPage from './pages/LeadersPage';
 import PageTransition from './components/PageTransition';
 import BottomNavbar from './components/BottomNavbar';
 import InstallBanner from './components/InstallBanner';
 
-const PUBLIC_ROUTES = ['/', '/schemes', '/report'];
+const PUBLIC_ROUTES = ['/', '/schemes', '/report', '/gallery', '/leaders'];
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -50,6 +53,22 @@ function AnimatedRoutes() {
               </PageTransition>
             }
           />
+          <Route
+            path="/gallery"
+            element={
+              <PageTransition>
+                <GalleryPage />
+              </PageTransition>
+            }
+          />
+          <Route
+            path="/leaders"
+            element={
+              <PageTransition>
+                <LeadersPage />
+              </PageTransition>
+            }
+          />
 
           {/* Admin routes (no page transitions) */}
           <Route path="/admin/login" element={<AdminLogin />} />
@@ -60,6 +79,7 @@ function AnimatedRoutes() {
             <Route path="leads/:id" element={<LeadDetail />} />
             <Route path="issues" element={<IssuesList />} />
             <Route path="issues/:id" element={<IssueDetail />} />
+            <Route path="gallery" element={<GalleryManager />} />
           </Route>
 
           {/* Catch all */}

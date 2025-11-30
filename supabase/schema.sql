@@ -202,3 +202,64 @@ CREATE POLICY "Enable read for authenticated"
   ON issue_documents
   FOR SELECT
   USING (auth.role() = 'authenticated');
+
+-- ============================================
+-- Gallery Images Table (for public gallery)
+-- ============================================
+
+CREATE TABLE IF NOT EXISTS gallery_images (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  created_at TIMESTAMPTZ DEFAULT now(),
+
+  -- Title (bilingual, optional)
+  title_en TEXT DEFAULT '',
+  title_kn TEXT DEFAULT '',
+
+  -- Image Data (base64 encoded)
+  image_data TEXT NOT NULL,
+  file_size INTEGER,
+  compressed_size INTEGER,
+  mime_type TEXT DEFAULT 'image/jpeg',
+
+  -- Ordering and Status
+  display_order INTEGER DEFAULT 0,
+  is_active BOOLEAN DEFAULT true
+);
+
+-- Indexes for queries
+CREATE INDEX IF NOT EXISTS idx_gallery_images_order ON gallery_images(display_order ASC);
+CREATE INDEX IF NOT EXISTS idx_gallery_images_active ON gallery_images(is_active);
+CREATE INDEX IF NOT EXISTS idx_gallery_images_created_at ON gallery_images(created_at DESC);
+
+-- Enable Row Level Security
+ALTER TABLE gallery_images ENABLE ROW LEVEL SECURITY;
+
+-- Policy: Allow ANYONE to READ active images (public gallery)
+CREATE POLICY "Enable public read for active images"
+  ON gallery_images
+  FOR SELECT
+  USING (is_active = true);
+
+-- Policy: Allow authenticated users (Admins) to READ all images
+CREATE POLICY "Enable full read for authenticated"
+  ON gallery_images
+  FOR SELECT
+  USING (auth.role() = 'authenticated');
+
+-- Policy: Allow ONLY AUTHENTICATED users (Admins) to INSERT
+CREATE POLICY "Enable insert for authenticated"
+  ON gallery_images
+  FOR INSERT
+  WITH CHECK (auth.role() = 'authenticated');
+
+-- Policy: Allow ONLY AUTHENTICATED users (Admins) to UPDATE
+CREATE POLICY "Enable update for authenticated"
+  ON gallery_images
+  FOR UPDATE
+  USING (auth.role() = 'authenticated');
+
+-- Policy: Allow ONLY AUTHENTICATED users (Admins) to DELETE
+CREATE POLICY "Enable delete for authenticated"
+  ON gallery_images
+  FOR DELETE
+  USING (auth.role() = 'authenticated');

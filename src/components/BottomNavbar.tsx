@@ -1,6 +1,6 @@
 import { NavLink, useLocation } from 'react-router-dom';
 import { motion, LayoutGroup } from 'framer-motion';
-import { Home, AlertCircle, FileText } from 'lucide-react';
+import { Home, AlertCircle, FileText, Images, Users } from 'lucide-react';
 import { useLanguage } from '../hooks/useLanguage';
 
 export default function BottomNavbar() {
@@ -26,6 +26,18 @@ export default function BottomNavbar() {
       label: t({ en: 'Schemes', kn: 'ಯೋಜನೆಗಳು' }),
       activeColor: 'text-blue-400',
     },
+    {
+      to: '/gallery',
+      icon: Images,
+      label: t({ en: 'Gallery', kn: 'ಗ್ಯಾಲರಿ' }),
+      activeColor: 'text-green-400',
+    },
+    {
+      to: '/leaders',
+      icon: Users,
+      label: t({ en: 'Leaders', kn: 'ನಾಯಕರು' }),
+      activeColor: 'text-purple-400',
+    },
   ];
 
   return (
@@ -34,7 +46,7 @@ export default function BottomNavbar() {
         initial={{ y: 100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ type: 'spring', stiffness: 260, damping: 25, delay: 0.1 }}
-        className="bg-slate-900 rounded-full shadow-2xl px-5 py-3 max-w-xs mx-auto overflow-hidden"
+        className="bg-slate-900 rounded-full shadow-2xl px-3 py-3 max-w-md mx-auto overflow-hidden"
       >
         <LayoutGroup>
           <div className="flex items-center justify-between">
