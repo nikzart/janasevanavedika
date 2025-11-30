@@ -1,9 +1,8 @@
 import { IssueFormData } from './issueApi';
 import { getCategoryName } from '../data/issueCategories';
 
-const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER || '919876543210';
-
-export function sendIssueToWhatsApp(data: IssueFormData): void {
+export function sendIssueToWhatsApp(data: IssueFormData, whatsappNumber?: string): void {
+  const number = whatsappNumber || '919876543210';
   const categoryName =
     data.category === 'other' && data.customCategory
       ? data.customCategory
@@ -27,6 +26,6 @@ export function sendIssueToWhatsApp(data: IssueFormData): void {
 *Description:*
 ${data.description}`;
 
-  const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+  const url = `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
   window.open(url, '_blank');
 }

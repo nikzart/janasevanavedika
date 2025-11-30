@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useLanguage } from '../hooks/useLanguage';
 import { submitIssue, IssueFormData } from '../lib/issueApi';
 import { sendIssueToWhatsApp } from '../lib/issueWhatsapp';
+import { getWhatsAppNumber } from '../lib/settingsApi';
 import Header from '../components/Header';
 import IssueForm from '../components/IssueForm';
 
@@ -16,8 +17,12 @@ export default function ReportIssuePage() {
     setIsSubmitting(true);
 
     try {
+      // Fetch WhatsApp number fresh at submission time
+      const whatsappNumber = await getWhatsAppNumber();
+      console.log('WhatsApp number from settings:', whatsappNumber);
+
       await submitIssue(data);
-      sendIssueToWhatsApp(data);
+      sendIssueToWhatsApp(data, whatsappNumber);
       setSubmitted(true);
     } catch (error) {
       console.error('Error submitting issue:', error);
