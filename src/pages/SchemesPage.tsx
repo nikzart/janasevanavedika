@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { schemes } from '../data/schemes';
 import { Scheme, LeadFormData } from '../types';
 import { useLanguage } from '../hooks/useLanguage';
@@ -14,11 +14,6 @@ export default function SchemesPage() {
   const { t } = useLanguage();
   const [selectedScheme, setSelectedScheme] = useState<Scheme | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [whatsappNumber, setWhatsappNumber] = useState<string>('');
-
-  useEffect(() => {
-    getWhatsAppNumber().then(setWhatsappNumber);
-  }, []);
 
   const handleSchemeClick = (scheme: Scheme) => {
     setSelectedScheme(scheme);
@@ -34,6 +29,10 @@ export default function SchemesPage() {
     setIsSubmitting(true);
 
     try {
+      // Fetch WhatsApp number fresh at submission time
+      const whatsappNumber = await getWhatsAppNumber();
+      console.log('WhatsApp number from settings:', whatsappNumber);
+
       const applicantName = (formData.name as string) || '';
       const mobileNumber = (formData.mobile as string) || '';
 
