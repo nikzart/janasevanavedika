@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { schemes } from '../data/schemes';
 import { Scheme, LeadFormData } from '../types';
 import { useLanguage } from '../hooks/useLanguage';
 import { submitLead } from '../lib/supabase';
 import { sendToWhatsApp } from '../lib/whatsapp';
+import { getWhatsAppNumber } from '../lib/settingsApi';
 import Header from '../components/Header';
 import SchemeCard from '../components/SchemeCard';
 import SchemeForm from '../components/SchemeForm';
@@ -13,6 +14,11 @@ export default function SchemesPage() {
   const { t } = useLanguage();
   const [selectedScheme, setSelectedScheme] = useState<Scheme | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [whatsappNumber, setWhatsappNumber] = useState<string>('');
+
+  useEffect(() => {
+    getWhatsAppNumber().then(setWhatsappNumber);
+  }, []);
 
   const handleSchemeClick = (scheme: Scheme) => {
     setSelectedScheme(scheme);
@@ -38,7 +44,7 @@ export default function SchemesPage() {
         formData,
       });
 
-      sendToWhatsApp(selectedScheme, formData);
+      sendToWhatsApp(selectedScheme, formData, whatsappNumber);
 
       setTimeout(() => {
         handleCloseSheet();

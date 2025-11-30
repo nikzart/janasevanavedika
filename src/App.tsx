@@ -9,6 +9,7 @@ import LeadDetail from './admin/LeadDetail';
 import IssuesList from './admin/IssuesList';
 import IssueDetail from './admin/IssueDetail';
 import GalleryManager from './admin/GalleryManager';
+import Settings from './admin/Settings';
 import HomePage from './pages/HomePage';
 import SchemesPage from './pages/SchemesPage';
 import ReportIssuePage from './pages/ReportIssuePage';
@@ -80,6 +81,7 @@ function AnimatedRoutes() {
             <Route path="issues" element={<IssuesList />} />
             <Route path="issues/:id" element={<IssueDetail />} />
             <Route path="gallery" element={<GalleryManager />} />
+            <Route path="settings" element={<Settings />} />
           </Route>
 
           {/* Catch all */}

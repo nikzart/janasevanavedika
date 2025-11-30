@@ -263,3 +263,37 @@ CREATE POLICY "Enable delete for authenticated"
   ON gallery_images
   FOR DELETE
   USING (auth.role() = 'authenticated');
+
+-- ============================================
+-- Settings Table (for app configuration)
+-- ============================================
+
+CREATE TABLE IF NOT EXISTS settings (
+  key TEXT PRIMARY KEY,
+  value TEXT NOT NULL,
+  updated_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- Insert default settings
+INSERT INTO settings (key, value) VALUES ('whatsapp_number', '') ON CONFLICT (key) DO NOTHING;
+
+-- Enable Row Level Security
+ALTER TABLE settings ENABLE ROW LEVEL SECURITY;
+
+-- Policy: Allow ANYONE to READ settings (public)
+CREATE POLICY "Enable public read for settings"
+  ON settings
+  FOR SELECT
+  USING (true);
+
+-- Policy: Allow ONLY AUTHENTICATED users (Admins) to UPDATE
+CREATE POLICY "Enable update for authenticated"
+  ON settings
+  FOR UPDATE
+  USING (auth.role() = 'authenticated');
+
+-- Policy: Allow ONLY AUTHENTICATED users (Admins) to INSERT
+CREATE POLICY "Enable insert for authenticated"
+  ON settings
+  FOR INSERT
+  WITH CHECK (auth.role() = 'authenticated');

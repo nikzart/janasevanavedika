@@ -1,7 +1,5 @@
 import { Scheme, LeadFormData } from '../types';
 
-const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER || '';
-
 /**
  * Generate WhatsApp message from scheme template and form data
  */
@@ -39,10 +37,10 @@ export function generateWhatsAppMessage(scheme: Scheme, formData: LeadFormData):
 /**
  * Open WhatsApp with pre-filled message
  */
-export function openWhatsApp(message: string): void {
+export function openWhatsApp(message: string, whatsappNumber?: string): void {
   const encodedMessage = encodeURIComponent(message);
-  const whatsappUrl = WHATSAPP_NUMBER
-    ? `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`
+  const whatsappUrl = whatsappNumber
+    ? `https://wa.me/${whatsappNumber}?text=${encodedMessage}`
     : `https://wa.me/?text=${encodedMessage}`;
 
   // Open in new tab/window
@@ -52,7 +50,7 @@ export function openWhatsApp(message: string): void {
 /**
  * Combined function to generate message and open WhatsApp
  */
-export function sendToWhatsApp(scheme: Scheme, formData: LeadFormData): void {
+export function sendToWhatsApp(scheme: Scheme, formData: LeadFormData, whatsappNumber?: string): void {
   const message = generateWhatsAppMessage(scheme, formData);
-  openWhatsApp(message);
+  openWhatsApp(message, whatsappNumber);
 }
