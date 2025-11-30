@@ -32,14 +32,12 @@ export default function LeadersPage() {
       </section>
 
       {/* Leaders Image */}
-      <main className="max-w-4xl mx-auto px-4 py-6">
-        <div className="flex justify-center">
-          <img
-            src="/leaders.png"
-            alt={t({ en: 'Our Leaders', kn: 'ನಮ್ಮ ನಾಯಕರು' })}
-            className="max-w-full h-auto rounded-xl"
-          />
-        </div>
+      <main className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-center">
+        <img
+          src="/leaders.png"
+          alt={t({ en: 'Our Leaders', kn: 'ನಮ್ಮ ನಾಯಕರು' })}
+          className="max-w-full max-h-[calc(100vh-280px)] object-contain rounded-xl"
+        />
       </main>
     </div>
   );
