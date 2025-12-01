@@ -15,11 +15,25 @@ declare global {
   }
 }
 
-export function useInstallPrompt() {
+export interface InstallPromptState {
+  isInstallable: boolean;
+  isInstalled: boolean;
+  isIOS: boolean;
+  isIOSSafari: boolean;
+  isIOSChrome: boolean;
+  isAndroid: boolean;
+  canPrompt: boolean;
+  promptInstall: () => Promise<boolean>;
+}
+
+export function useInstallPrompt(): InstallPromptState {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [isInstalled, setIsInstalled] = useState(false);
   const [isInstallable, setIsInstallable] = useState(false);
   const [isIOS, setIsIOS] = useState(false);
+  const [isIOSSafari, setIsIOSSafari] = useState(false);
+  const [isIOSChrome, setIsIOSChrome] = useState(false);
+  const [isAndroid, setIsAndroid] = useState(false);
 
   useEffect(() => {
     // Check if already installed (standalone mode)
@@ -31,26 +45,36 @@ export function useInstallPrompt() {
       return;
     }
 
-    // Check if iOS (Safari on iOS)
-    const iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as { MSStream?: unknown }).MSStream;
-    setIsIOS(iOS);
+    const ua = navigator.userAgent;
 
-    // iOS doesn't support beforeinstallprompt, but we can still show instructions
-    if (iOS) {
+    // Better iOS detection - includes iPad with desktop mode
+    const isIOSDevice = /iPad|iPhone|iPod/.test(ua) ||
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+    setIsIOS(isIOSDevice);
+
+    if (isIOSDevice) {
+      // Detect which browser on iOS
+      // CriOS = Chrome on iOS, FxiOS = Firefox on iOS
+      const isChromeOnIOS = /CriOS/.test(ua);
+      const isSafariOnIOS = /Safari/.test(ua) && !/CriOS|FxiOS|OPiOS|EdgiOS/.test(ua);
+
+      setIsIOSChrome(isChromeOnIOS);
+      setIsIOSSafari(isSafariOnIOS);
       setIsInstallable(true);
       return;
     }
 
-    // Check if Android (for showing banner even without beforeinstallprompt on non-HTTPS)
-    const isAndroid = /Android/i.test(navigator.userAgent);
-    const isChrome = /Chrome/i.test(navigator.userAgent) && !/Edge|Edg/i.test(navigator.userAgent);
+    // Android detection
+    const isAndroidDevice = /Android/i.test(ua);
+    setIsAndroid(isAndroidDevice);
 
-    // On Android Chrome, show install option even if beforeinstallprompt hasn't fired yet
-    // (it won't fire on non-HTTPS local network, but we can still show the banner)
-    if (isAndroid && isChrome) {
+    // On Android, show install option
+    if (isAndroidDevice) {
       setIsInstallable(true);
     }
 
+    // Listen for beforeinstallprompt (Chrome, Edge, Samsung Internet on Android)
     const handleBeforeInstallPrompt = (e: BeforeInstallPromptEvent) => {
       e.preventDefault();
       setDeferredPrompt(e);
@@ -91,6 +115,9 @@ export function useInstallPrompt() {
     isInstallable,
     isInstalled,
     isIOS,
+    isIOSSafari,
+    isIOSChrome,
+    isAndroid,
     canPrompt: !!deferredPrompt,
     promptInstall,
   };
