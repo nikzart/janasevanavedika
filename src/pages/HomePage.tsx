@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { AlertCircle, FileText } from 'lucide-react';
+import { AlertCircle, FileText, Instagram, Facebook } from 'lucide-react';
 import { useLanguage } from '../hooks/useLanguage';
 import Header from '../components/Header';
 
@@ -10,21 +10,32 @@ export default function HomePage() {
     <div className="min-h-screen bg-background pb-24">
       <Header />
 
-      {/* Hero Section with Ravi Photo */}
+      {/* Hero Section with Banner */}
       <section className="relative overflow-hidden">
         {/* Background gradient */}
         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-action/10 to-success/10" />
 
-        {/* Ravi Photo */}
-        <div className="relative z-10 flex flex-col items-center pt-6 pb-8 px-4">
-          <div className="w-40 h-40 md:w-48 md:h-48 rounded-full overflow-hidden border-4 border-white shadow-2xl mb-4">
-            <img
-              src="/ravi-avatar.png"
-              alt="Dr B Ravi"
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <h2 className="text-2xl md:text-3xl font-bold text-slate-800 text-center">
+        {/* Banner Images */}
+        <div className="relative z-10 flex justify-center items-end pt-6 pb-4 px-4">
+          {/* Ribbon behind images */}
+          <img
+            src="/banner/ribbon.png"
+            alt=""
+            className="absolute inset-0 w-full h-full object-contain z-0"
+          />
+          <img
+            src="/banner/1.png"
+            alt="Dr B Ravi"
+            className="h-48 md:h-64 object-contain relative z-10"
+          />
+          <img
+            src="/banner/2.png"
+            alt="Leader"
+            className="h-48 md:h-64 object-contain relative z-10"
+          />
+        </div>
+        <div className="relative z-10 text-center pb-6 px-4">
+          <h2 className="text-2xl md:text-3xl font-bold text-slate-800">
             {t({ en: 'Dr B Ravi', kn: 'ಡಾ. ಬಿ ರವಿ' })}
           </h2>
           <p className="text-slate-600 text-center mt-1">
@@ -90,6 +101,28 @@ export default function HomePage() {
             </div>
           </div>
         </Link>
+
+        {/* Social Media Links */}
+        <div className="flex justify-center gap-4 pt-2">
+          <a
+            href="https://www.instagram.com/ravi_congress_jogupalaya/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-500 text-white rounded-xl shadow hover:shadow-lg transform hover:scale-105 transition-all"
+          >
+            <Instagram className="w-5 h-5" />
+            <span className="text-sm font-medium">Instagram</span>
+          </a>
+          <a
+            href="https://www.facebook.com/RaviUlsoorCongress"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-xl shadow hover:shadow-lg transform hover:scale-105 transition-all"
+          >
+            <Facebook className="w-5 h-5" />
+            <span className="text-sm font-medium">Facebook</span>
+          </a>
+        </div>
 
       </main>
     </div>

@@ -14,7 +14,7 @@ export default function LanguageToggle() {
         }`}
         aria-label="English"
       >
-        EN
+        English
       </button>
       <button
         onClick={() => setLanguage('kn')}
