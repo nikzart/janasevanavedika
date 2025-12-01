@@ -10,6 +10,18 @@ export default function HomePage() {
     <div className="min-h-screen bg-background pb-24">
       <Header />
 
+      {/* Party Leaders Strip */}
+      <div className="bg-white py-3 px-4 flex justify-center items-center gap-4 md:gap-6 overflow-x-auto">
+        {[1, 2, 3, 4, 5].map((num) => (
+          <img
+            key={num}
+            src={`/partyleaders/${num}.png`}
+            alt={`Party Leader ${num}`}
+            className="h-14 md:h-16 object-contain flex-shrink-0"
+          />
+        ))}
+      </div>
+
       {/* Hero Section with Banner */}
       <section className="relative overflow-hidden">
         {/* Background gradient */}
