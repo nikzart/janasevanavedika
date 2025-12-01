@@ -27,5 +27,6 @@ export function sendIssueToWhatsApp(data: IssueFormData, whatsappNumber?: string
 ${data.description}`;
 
   const url = `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
-  window.open(url, '_blank');
+  // Use location.href for Safari/iOS compatibility (window.open is blocked in async callbacks)
+  window.location.href = url;
 }

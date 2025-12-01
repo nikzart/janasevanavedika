@@ -43,8 +43,8 @@ export function openWhatsApp(message: string, whatsappNumber?: string): void {
     ? `https://wa.me/${whatsappNumber}?text=${encodedMessage}`
     : `https://wa.me/?text=${encodedMessage}`;
 
-  // Open in new tab/window
-  window.open(whatsappUrl, '_blank');
+  // Use location.href for Safari/iOS compatibility (window.open is blocked in async callbacks)
+  window.location.href = whatsappUrl;
 }
 
 /**
