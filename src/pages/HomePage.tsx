@@ -2,6 +2,21 @@ import { Link } from 'react-router-dom';
 import { AlertCircle, FileText, Instagram, Facebook } from 'lucide-react';
 import { useLanguage } from '../hooks/useLanguage';
 import Header from '../components/Header';
+import ScrollingText from '../components/ScrollingText';
+import type { BilingualText } from '../types';
+
+const serviceItems: BilingualText[] = [
+  { en: 'We are here to Help you', kn: 'ನಿಮಗೆ ಸಹಾಯ ಮಾಡಲು ನಾವಿದ್ದೇವೆ' },
+  { en: 'Shree. NA Haris Ji Team', kn: 'ಶ್ರೀ ಎನ್.ಎ. ಹ್ಯಾರಿಸ್ ಜಿ ಅವರ ತಂಡ' },
+  { en: 'Dr. B. Ravi', kn: 'ಡಾ. ಬಿ. ರವಿ' },
+  { en: 'Garbage', kn: 'ಕಸ ವಿಲೇವಾರಿ' },
+  { en: 'Bescom / Bwssb', kn: 'ಬೆಸ್ಕಾಂ / ಜಲಮಂಡಳಿ' },
+  { en: 'Drainage', kn: 'ಒಳಚರಂಡಿ' },
+  { en: 'Voter ID : Aadhar Card : Ration Card', kn: 'ಮತದಾರರ ಗುರುತಿನ ಚೀಟಿ : ಆಧಾರ್ ಕಾರ್ಡ್ : ಪಡಿತರ ಚೀಟಿ' },
+  { en: '5 Guarantees implementation', kn: '5 ಗ್ಯಾರಂಟಿಗಳ ಅನುಷ್ಠಾನ' },
+  { en: 'Old Age Pensions / Widow Pensions', kn: 'ವೃದ್ಧಾಪ್ಯ ವೇತನ / ವಿಧವಾ ವೇತನ' },
+  { en: 'Contact Us - please download the app', kn: 'ನಮ್ಮನ್ನು ಸಂಪರ್ಕಿಸಲು ದಯವಿಟ್ಟು ಆ್ಯಪ್ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ' },
+];
 
 export default function HomePage() {
   const { t } = useLanguage();
@@ -53,12 +68,10 @@ export default function HomePage() {
           <p className="text-slate-600 text-center mt-1">
             {t({ en: 'President, Minority Block Domlur & Govt. of Karnataka Guarantee Scheme Member, Jogupalya', kn: 'ಅಧ್ಯಕ್ಷರು, ಅಲ್ಪಸಂಖ್ಯಾತ ಬ್ಲಾಕ್ ದೊಮ್ಮಲೂರು & ಕರ್ನಾಟಕ ಸರ್ಕಾರ ಖಾತರಿ ಯೋಜನೆ ಸದಸ್ಯರು, ಜೋಗುಪಾಳ್ಯ' })}
           </p>
-          <p className="text-xl font-semibold text-primary mt-4 text-center">
-            {t({
-              en: 'We are here to help you',
-              kn: 'ನಾವು ನಿಮಗೆ ಸಹಾಯ ಮಾಡಲು ಇಲ್ಲಿದ್ದೇವೆ',
-            })}
-          </p>
+          <ScrollingText
+            items={serviceItems}
+            className="text-xl font-semibold text-primary mt-4 text-center"
+          />
         </div>
 
         {/* Decorative elements */}

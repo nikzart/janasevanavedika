@@ -182,6 +182,16 @@ button, a, input, select, textarea {
   }
 }
 
+/* Marquee scroll right to left */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
 /* ============================================
    UTILITY ANIMATION CLASSES
    ============================================ */
@@ -224,6 +234,10 @@ button, a, input, select, textarea {
 
 .animate-float {
   animation: float 3s ease-in-out infinite;
+}
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
 }
 
 /* Staggered animation delays for cards */
