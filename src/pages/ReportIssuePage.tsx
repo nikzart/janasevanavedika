@@ -66,7 +66,7 @@ export default function ReportIssuePage() {
       <Header />
 
       {/* Page Header */}
-      <section className="bg-gradient-to-r from-red-500 to-orange-500 py-5 px-4">
+      <section className="bg-gradient-to-r from-green-500 to-emerald-600 py-5 px-4">
         <div className="max-w-lg mx-auto">
           <Link
             to="/"

@@ -84,7 +84,7 @@ export default function HomePage() {
         {/* Report Issue Card */}
         <Link
           to="/report"
-          className="block p-5 bg-gradient-to-r from-red-500 to-orange-500 rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all"
+          className="block p-5 bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all"
         >
           <div className="flex items-center gap-4">
             <div className="w-14 h-14 bg-white/20 rounded-xl flex items-center justify-center">
@@ -150,6 +150,18 @@ export default function HomePage() {
         </div>
 
       </main>
+
+      {/* Powered by Footer */}
+      <footer className="text-center pb-4">
+        <a
+          href="https://jnginnovators.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-xs text-slate-400 hover:text-slate-600 transition-colors"
+        >
+          powered by JnG Innovators Private Limited
+        </a>
+      </footer>
     </div>
   );
 }
