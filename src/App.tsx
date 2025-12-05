@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
+import { useRegisterSW } from 'virtual:pwa-register/react';
 import { AdminProvider } from './admin/AdminContext';
 import AdminLayout from './admin/AdminLayout';
 import AdminLogin from './admin/AdminLogin';
@@ -18,6 +19,7 @@ import LeadersPage from './pages/LeadersPage';
 import PageTransition from './components/PageTransition';
 import BottomNavbar from './components/BottomNavbar';
 import InstallBanner from './components/InstallBanner';
+import UpdateBanner from './components/UpdateBanner';
 
 const PUBLIC_ROUTES = ['/', '/schemes', '/report', '/gallery', '/leaders'];
 
@@ -99,9 +101,26 @@ function AnimatedRoutes() {
 }
 
 export default function App() {
+  const {
+    needRefresh: [needRefresh],
+    updateServiceWorker,
+  } = useRegisterSW({
+    onRegistered(r) {
+      console.log('SW Registered:', r);
+    },
+    onRegisterError(error) {
+      console.log('SW registration error', error);
+    },
+  });
+
+  const handleUpdate = () => {
+    updateServiceWorker(true);
+  };
+
   return (
     <BrowserRouter>
       <AdminProvider>
+        {needRefresh && <UpdateBanner onUpdate={handleUpdate} />}
         <AnimatedRoutes />
       </AdminProvider>
     </BrowserRouter>
