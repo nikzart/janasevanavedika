@@ -105,10 +105,10 @@ export default function App() {
     needRefresh: [needRefresh],
     updateServiceWorker,
   } = useRegisterSW({
-    onRegistered(r) {
+    onRegistered(r: ServiceWorkerRegistration | undefined) {
       console.log('SW Registered:', r);
     },
-    onRegisterError(error) {
+    onRegisterError(error: Error) {
       console.log('SW registration error', error);
     },
   });
