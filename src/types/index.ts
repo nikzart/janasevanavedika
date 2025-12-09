@@ -75,3 +75,30 @@ export interface GalleryImage {
   display_order: number;
   is_active: boolean;
 }
+
+// Leader category hierarchy levels
+export type LeaderCategory = 'state' | 'district' | 'ward' | 'area';
+
+export interface Leader {
+  id: string;
+  created_at: string;
+  name_en: string;
+  name_kn: string;
+  position_en: string;
+  position_kn: string;
+  image_data: string;
+  file_size: number | null;
+  compressed_size: number | null;
+  mime_type: string;
+  category: LeaderCategory;
+  display_order: number;
+  is_active: boolean;
+}
+
+// Bilingual labels for leader categories
+export const LEADER_CATEGORIES: Record<LeaderCategory, BilingualText> = {
+  state: { en: 'State Level', kn: 'ರಾಜ್ಯ ಮಟ್ಟ' },
+  district: { en: 'District Level', kn: 'ಜಿಲ್ಲಾ ಮಟ್ಟ' },
+  ward: { en: 'Ward Level', kn: 'ವಾರ್ಡ್ ಮಟ್ಟ' },
+  area: { en: 'Area Level', kn: 'ಪ್ರದೇಶ ಮಟ್ಟ' },
+};

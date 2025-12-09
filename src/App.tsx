@@ -10,6 +10,7 @@ import LeadDetail from './admin/LeadDetail';
 import IssuesList from './admin/IssuesList';
 import IssueDetail from './admin/IssueDetail';
 import GalleryManager from './admin/GalleryManager';
+import LeadersManager from './admin/LeadersManager';
 import Settings from './admin/Settings';
 import HomePage from './pages/HomePage';
 import SchemesPage from './pages/SchemesPage';
@@ -83,6 +84,7 @@ function AnimatedRoutes() {
             <Route path="issues" element={<IssuesList />} />
             <Route path="issues/:id" element={<IssueDetail />} />
             <Route path="gallery" element={<GalleryManager />} />
+            <Route path="leaders" element={<LeadersManager />} />
             <Route path="settings" element={<Settings />} />
           </Route>
 

@@ -297,3 +297,72 @@ CREATE POLICY "Enable insert for authenticated"
   ON settings
   FOR INSERT
   WITH CHECK (auth.role() = 'authenticated');
+
+-- ============================================
+-- Leaders Table (for public leaders page)
+-- ============================================
+
+CREATE TABLE IF NOT EXISTS leaders (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  created_at TIMESTAMPTZ DEFAULT now(),
+
+  -- Name (bilingual, required)
+  name_en TEXT NOT NULL,
+  name_kn TEXT NOT NULL,
+
+  -- Position/Title (bilingual, required)
+  position_en TEXT NOT NULL,
+  position_kn TEXT NOT NULL,
+
+  -- Image Data (base64 encoded)
+  image_data TEXT NOT NULL,
+  file_size INTEGER,
+  compressed_size INTEGER,
+  mime_type TEXT DEFAULT 'image/jpeg',
+
+  -- Category/Hierarchy Level: 'state', 'district', 'ward'
+  category TEXT NOT NULL DEFAULT 'ward',
+
+  -- Ordering and Status
+  display_order INTEGER DEFAULT 0,
+  is_active BOOLEAN DEFAULT true
+);
+
+-- Indexes for queries
+CREATE INDEX IF NOT EXISTS idx_leaders_order ON leaders(display_order ASC);
+CREATE INDEX IF NOT EXISTS idx_leaders_active ON leaders(is_active);
+CREATE INDEX IF NOT EXISTS idx_leaders_category ON leaders(category);
+CREATE INDEX IF NOT EXISTS idx_leaders_created_at ON leaders(created_at DESC);
+
+-- Enable Row Level Security
+ALTER TABLE leaders ENABLE ROW LEVEL SECURITY;
+
+-- Policy: Allow ANYONE to READ active leaders (public page)
+CREATE POLICY "Enable public read for active leaders"
+  ON leaders
+  FOR SELECT
+  USING (is_active = true);
+
+-- Policy: Allow authenticated users (Admins) to READ all leaders
+CREATE POLICY "Enable full read for authenticated"
+  ON leaders
+  FOR SELECT
+  USING (auth.role() = 'authenticated');
+
+-- Policy: Allow ONLY AUTHENTICATED users (Admins) to INSERT
+CREATE POLICY "Enable insert for authenticated"
+  ON leaders
+  FOR INSERT
+  WITH CHECK (auth.role() = 'authenticated');
+
+-- Policy: Allow ONLY AUTHENTICATED users (Admins) to UPDATE
+CREATE POLICY "Enable update for authenticated"
+  ON leaders
+  FOR UPDATE
+  USING (auth.role() = 'authenticated');
+
+-- Policy: Allow ONLY AUTHENTICATED users (Admins) to DELETE
+CREATE POLICY "Enable delete for authenticated"
+  ON leaders
+  FOR DELETE
+  USING (auth.role() = 'authenticated');
