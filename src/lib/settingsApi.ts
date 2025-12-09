@@ -1,4 +1,5 @@
 import { supabase } from './supabase';
+import type { BilingualText } from '../types';
 
 // Cache for settings to avoid repeated API calls
 let settingsCache: Record<string, string> = {};
@@ -24,7 +25,7 @@ export async function getSetting(key: string): Promise<string> {
     .from('settings')
     .select('value')
     .eq('key', key)
-    .single();
+    .maybeSingle();
 
   if (error) {
     console.error('Error fetching setting:', error);
@@ -32,10 +33,11 @@ export async function getSetting(key: string): Promise<string> {
   }
 
   // Update cache
-  settingsCache[key] = data?.value || '';
+  const value = data?.value || '';
+  settingsCache[key] = value;
   cacheTimestamp = now;
 
-  return data?.value || '';
+  return value;
 }
 
 /**
@@ -54,25 +56,20 @@ export async function updateSetting(key: string, value: string): Promise<boolean
     return false;
   }
 
-  // Try to update first
-  const { error: updateError } = await supabase
+  // Use upsert - insert if not exists, update if exists
+  const { error } = await supabase
     .from('settings')
-    .update({ value, updated_at: new Date().toISOString() })
-    .eq('key', key);
+    .upsert(
+      { key, value, updated_at: new Date().toISOString() },
+      { onConflict: 'key' }
+    );
 
-  if (updateError) {
-    // If update fails (row doesn't exist), try insert
-    const { error: insertError } = await supabase
-      .from('settings')
-      .insert({ key, value });
-
-    if (insertError) {
-      console.error('Error updating setting:', insertError);
-      return false;
-    }
+  if (error) {
+    console.error('Error updating setting:', error);
+    return false;
   }
 
-  // Clear cache
+  // Update cache
   settingsCache[key] = value;
   cacheTimestamp = Date.now();
 
@@ -110,4 +107,31 @@ export async function getAllSettings(): Promise<Record<string, string>> {
   });
 
   return settings;
+}
+
+/**
+ * Get scrolling text items for homepage marquee
+ */
+export async function getScrollingText(): Promise<BilingualText[]> {
+  const json = await getSetting('scrolling_text');
+  if (!json) return [];
+
+  try {
+    const items = JSON.parse(json);
+    if (Array.isArray(items)) {
+      return items;
+    }
+    return [];
+  } catch {
+    console.error('Error parsing scrolling text JSON');
+    return [];
+  }
+}
+
+/**
+ * Update scrolling text items (admin only)
+ */
+export async function updateScrollingText(items: BilingualText[]): Promise<boolean> {
+  const json = JSON.stringify(items);
+  return updateSetting('scrolling_text', json);
 }

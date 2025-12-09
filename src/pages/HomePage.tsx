@@ -1,11 +1,13 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { AlertCircle, FileText, Instagram, Facebook } from 'lucide-react';
 import { useLanguage } from '../hooks/useLanguage';
 import Header from '../components/Header';
 import ScrollingText from '../components/ScrollingText';
+import { getScrollingText } from '../lib/settingsApi';
 import type { BilingualText } from '../types';
 
-const serviceItems: BilingualText[] = [
+const DEFAULT_SERVICE_ITEMS: BilingualText[] = [
   { en: 'We are here to Help you', kn: 'ನಿಮಗೆ ಸಹಾಯ ಮಾಡಲು ನಾವಿದ್ದೇವೆ' },
   { en: 'Shree. NA Haris Ji Team', kn: 'ಶ್ರೀ ಎನ್.ಎ. ಹ್ಯಾರಿಸ್ ಜಿ ಅವರ ತಂಡ' },
   { en: 'Dr. B. Ravi', kn: 'ಡಾ. ಬಿ. ರವಿ' },
@@ -20,6 +22,18 @@ const serviceItems: BilingualText[] = [
 
 export default function HomePage() {
   const { t } = useLanguage();
+  const [scrollingItems, setScrollingItems] = useState<BilingualText[]>(DEFAULT_SERVICE_ITEMS);
+
+  useEffect(() => {
+    loadScrollingText();
+  }, []);
+
+  const loadScrollingText = async () => {
+    const items = await getScrollingText();
+    if (items.length > 0) {
+      setScrollingItems(items);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background pb-24">
@@ -69,7 +83,7 @@ export default function HomePage() {
             {t({ en: 'President, Minority Block Domlur & Govt. of Karnataka Guarantee Scheme Member, Jogupalya', kn: 'ಅಧ್ಯಕ್ಷರು, ಅಲ್ಪಸಂಖ್ಯಾತ ಬ್ಲಾಕ್ ದೊಮ್ಮಲೂರು & ಕರ್ನಾಟಕ ಸರ್ಕಾರ ಖಾತರಿ ಯೋಜನೆ ಸದಸ್ಯರು, ಜೋಗುಪಾಳ್ಯ' })}
           </p>
           <ScrollingText
-            items={serviceItems}
+            items={scrollingItems}
             className="text-xl font-semibold text-primary mt-4 text-center"
           />
         </div>
