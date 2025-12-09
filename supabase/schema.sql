@@ -320,8 +320,12 @@ CREATE TABLE IF NOT EXISTS leaders (
   compressed_size INTEGER,
   mime_type TEXT DEFAULT 'image/jpeg',
 
-  -- Category/Hierarchy Level: 'state', 'district', 'ward'
+  -- Category/Hierarchy Level: 'state', 'district', 'ward', 'area'
   category TEXT NOT NULL DEFAULT 'ward',
+
+  -- Contact Information (optional)
+  mobile_number TEXT,
+  whatsapp_number TEXT,
 
   -- Ordering and Status
   display_order INTEGER DEFAULT 0,

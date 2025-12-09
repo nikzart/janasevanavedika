@@ -61,6 +61,8 @@ export interface AddLeaderParams {
   compressed_size?: number;
   mime_type?: string;
   category: LeaderCategory;
+  mobile_number?: string;
+  whatsapp_number?: string;
   display_order?: number;
   is_active?: boolean;
 }
@@ -85,6 +87,8 @@ export async function addLeader(
     compressed_size: params.compressed_size || null,
     mime_type: params.mime_type || 'image/jpeg',
     category: params.category,
+    mobile_number: params.mobile_number || null,
+    whatsapp_number: params.whatsapp_number || null,
     display_order: params.display_order || 0,
     is_active: params.is_active ?? true,
   });

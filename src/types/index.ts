@@ -91,6 +91,8 @@ export interface Leader {
   compressed_size: number | null;
   mime_type: string;
   category: LeaderCategory;
+  mobile_number: string | null;
+  whatsapp_number: string | null;
   display_order: number;
   is_active: boolean;
 }

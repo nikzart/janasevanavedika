@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { Loader2, UserX, Search } from 'lucide-react';
+import { Loader2, UserX, Search, Phone, MessageCircle } from 'lucide-react';
 import { useLanguage } from '../hooks/useLanguage';
 import { Leader, LeaderCategory, LEADER_CATEGORIES } from '../types';
 import { fetchLeaders } from '../lib/leadersApi';
@@ -194,6 +194,8 @@ interface LeaderCardProps {
 }
 
 function LeaderCard({ leader, language }: LeaderCardProps) {
+  const hasContact = leader.mobile_number || leader.whatsapp_number;
+
   return (
     <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden
                     hover:shadow-md transition-shadow">
@@ -211,6 +213,30 @@ function LeaderCard({ leader, language }: LeaderCardProps) {
         <p className="text-sm text-slate-500 line-clamp-1">
           {language === 'en' ? leader.position_en : leader.position_kn}
         </p>
+        {hasContact && (
+          <div className="flex justify-center gap-2 mt-2">
+            {leader.mobile_number && (
+              <a
+                href={`tel:${leader.mobile_number}`}
+                className="p-2 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors"
+                title="Call"
+              >
+                <Phone className="w-4 h-4" />
+              </a>
+            )}
+            {leader.whatsapp_number && (
+              <a
+                href={`https://wa.me/${leader.whatsapp_number}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 rounded-full bg-green-50 text-green-600 hover:bg-green-100 transition-colors"
+                title="WhatsApp"
+              >
+                <MessageCircle className="w-4 h-4" />
+              </a>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

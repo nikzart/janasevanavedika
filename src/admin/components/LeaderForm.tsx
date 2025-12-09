@@ -1,5 +1,5 @@
 import { useState, useRef, ChangeEvent } from 'react';
-import { X, Upload, Loader2, Camera } from 'lucide-react';
+import { X, Upload, Loader2, Camera, Phone, MessageCircle } from 'lucide-react';
 import { compressImage, isValidImageType, isWithinSizeLimit, CompressedImage } from '../../lib/imageUtils';
 import { LeaderCategory, LEADER_CATEGORIES, Leader } from '../../types';
 
@@ -15,6 +15,8 @@ interface LeaderFormProps {
     compressed_size: number;
     mime_type: string;
     category: LeaderCategory;
+    mobile_number?: string;
+    whatsapp_number?: string;
   }) => Promise<void>;
   onCancel: () => void;
   isSubmitting: boolean;
@@ -33,6 +35,8 @@ export default function LeaderForm({
   const [positionEn, setPositionEn] = useState(initialData?.position_en || '');
   const [positionKn, setPositionKn] = useState(initialData?.position_kn || '');
   const [category, setCategory] = useState<LeaderCategory>(initialData?.category || 'ward');
+  const [mobileNumber, setMobileNumber] = useState(initialData?.mobile_number || '');
+  const [whatsappNumber, setWhatsappNumber] = useState(initialData?.whatsapp_number || '');
   const [image, setImage] = useState<CompressedImage | null>(
     initialData ? {
       base64: initialData.image_data,
@@ -119,6 +123,8 @@ export default function LeaderForm({
       compressed_size: image.compressedSize,
       mime_type: image.mimeType,
       category,
+      mobile_number: mobileNumber.trim() || undefined,
+      whatsapp_number: whatsappNumber.trim() || undefined,
     });
   };
 
@@ -275,6 +281,47 @@ export default function LeaderForm({
             </option>
           ))}
         </select>
+      </div>
+
+      {/* Contact Numbers */}
+      <div className="grid grid-cols-2 gap-3">
+        {/* Mobile Number */}
+        <div>
+          <label
+            htmlFor="mobile_number"
+            className="block text-sm font-medium text-slate-700 mb-1"
+          >
+            <Phone className="w-3.5 h-3.5 inline mr-1" />
+            Mobile
+          </label>
+          <input
+            id="mobile_number"
+            type="tel"
+            value={mobileNumber}
+            onChange={(e) => setMobileNumber(e.target.value)}
+            placeholder="9876543210"
+            className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
+          />
+        </div>
+
+        {/* WhatsApp Number */}
+        <div>
+          <label
+            htmlFor="whatsapp_number"
+            className="block text-sm font-medium text-slate-700 mb-1"
+          >
+            <MessageCircle className="w-3.5 h-3.5 inline mr-1" />
+            WhatsApp
+          </label>
+          <input
+            id="whatsapp_number"
+            type="tel"
+            value={whatsappNumber}
+            onChange={(e) => setWhatsappNumber(e.target.value)}
+            placeholder="919876543210"
+            className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
+          />
+        </div>
       </div>
 
       {/* Error */}
