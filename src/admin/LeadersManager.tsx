@@ -99,7 +99,10 @@ function SortableLeaderCard({
           {leader.name_en}
         </h3>
         <p className="text-xs text-slate-500 truncate">
-          {leader.position_en}
+          {leader.position_en || (leader.category === 'area' ? '' : '—')}
+          {leader.category === 'area' && leader.area_name_en && (
+            <span className="text-slate-500 ml-1">{leader.position_en ? '• ' : ''}{leader.area_name_en}</span>
+          )}
         </p>
       </div>
 

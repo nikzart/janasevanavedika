@@ -63,6 +63,8 @@ export interface AddLeaderParams {
   category: LeaderCategory;
   mobile_number?: string;
   whatsapp_number?: string;
+  area_name_en?: string;
+  area_name_kn?: string;
   display_order?: number;
   is_active?: boolean;
 }
@@ -89,6 +91,8 @@ export async function addLeader(
     category: params.category,
     mobile_number: params.mobile_number || null,
     whatsapp_number: params.whatsapp_number || null,
+    area_name_en: params.area_name_en || null,
+    area_name_kn: params.area_name_kn || null,
     display_order: params.display_order || 0,
     is_active: params.is_active ?? true,
   });

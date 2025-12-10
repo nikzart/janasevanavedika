@@ -93,6 +93,8 @@ export interface Leader {
   category: LeaderCategory;
   mobile_number: string | null;
   whatsapp_number: string | null;
+  area_name_en: string | null;
+  area_name_kn: string | null;
   display_order: number;
   is_active: boolean;
 }

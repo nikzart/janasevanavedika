@@ -327,6 +327,10 @@ CREATE TABLE IF NOT EXISTS leaders (
   mobile_number TEXT,
   whatsapp_number TEXT,
 
+  -- Area Name (for 'area' category leaders)
+  area_name_en TEXT,
+  area_name_kn TEXT,
+
   -- Ordering and Status
   display_order INTEGER DEFAULT 0,
   is_active BOOLEAN DEFAULT true

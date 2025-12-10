@@ -17,6 +17,8 @@ interface LeaderFormProps {
     category: LeaderCategory;
     mobile_number?: string;
     whatsapp_number?: string;
+    area_name_en?: string;
+    area_name_kn?: string;
   }) => Promise<void>;
   onCancel: () => void;
   isSubmitting: boolean;
@@ -37,6 +39,8 @@ export default function LeaderForm({
   const [category, setCategory] = useState<LeaderCategory>(initialData?.category || 'ward');
   const [mobileNumber, setMobileNumber] = useState(initialData?.mobile_number || '');
   const [whatsappNumber, setWhatsappNumber] = useState(initialData?.whatsapp_number || '');
+  const [areaNameEn, setAreaNameEn] = useState(initialData?.area_name_en || '');
+  const [areaNameKn, setAreaNameKn] = useState(initialData?.area_name_kn || '');
   const [image, setImage] = useState<CompressedImage | null>(
     initialData ? {
       base64: initialData.image_data,
@@ -98,14 +102,17 @@ export default function LeaderForm({
       return;
     }
 
-    if (!positionEn.trim()) {
-      setError('Please enter position in English');
-      return;
-    }
+    // Position is required for non-area categories
+    if (category !== 'area') {
+      if (!positionEn.trim()) {
+        setError('Please enter position in English');
+        return;
+      }
 
-    if (!positionKn.trim()) {
-      setError('Please enter position in Kannada');
-      return;
+      if (!positionKn.trim()) {
+        setError('Please enter position in Kannada');
+        return;
+      }
     }
 
     if (!image) {
@@ -125,6 +132,8 @@ export default function LeaderForm({
       category,
       mobile_number: mobileNumber.trim() || undefined,
       whatsapp_number: whatsappNumber.trim() || undefined,
+      area_name_en: category === 'area' && areaNameEn.trim() ? areaNameEn.trim() : undefined,
+      area_name_kn: category === 'area' && areaNameKn.trim() ? areaNameKn.trim() : undefined,
     });
   };
 
@@ -231,7 +240,7 @@ export default function LeaderForm({
           htmlFor="position_en"
           className="block text-sm font-medium text-slate-700 mb-1"
         >
-          Position (English) <span className="text-red-500">*</span>
+          Position (English) {category !== 'area' && <span className="text-red-500">*</span>}
         </label>
         <input
           id="position_en"
@@ -249,7 +258,7 @@ export default function LeaderForm({
           htmlFor="position_kn"
           className="block text-sm font-medium text-slate-700 mb-1"
         >
-          Position (Kannada) <span className="text-red-500">*</span>
+          Position (Kannada) {category !== 'area' && <span className="text-red-500">*</span>}
         </label>
         <input
           id="position_kn"
@@ -282,6 +291,44 @@ export default function LeaderForm({
           ))}
         </select>
       </div>
+
+      {/* Area Name - only for area category */}
+      {category === 'area' && (
+        <div className="grid grid-cols-2 gap-3 p-3 bg-orange-50 rounded-lg border border-orange-200">
+          <div>
+            <label
+              htmlFor="area_name_en"
+              className="block text-sm font-medium text-slate-700 mb-1"
+            >
+              Area Name (English)
+            </label>
+            <input
+              id="area_name_en"
+              type="text"
+              value={areaNameEn}
+              onChange={(e) => setAreaNameEn(e.target.value)}
+              placeholder="e.g. Shivajinagar"
+              className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
+            />
+          </div>
+          <div>
+            <label
+              htmlFor="area_name_kn"
+              className="block text-sm font-medium text-slate-700 mb-1"
+            >
+              Area Name (Kannada)
+            </label>
+            <input
+              id="area_name_kn"
+              type="text"
+              value={areaNameKn}
+              onChange={(e) => setAreaNameKn(e.target.value)}
+              placeholder="ಉದಾ. ಶಿವಾಜಿನಗರ"
+              className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
+            />
+          </div>
+        </div>
+      )}
 
       {/* Contact Numbers */}
       <div className="grid grid-cols-2 gap-3">

@@ -195,6 +195,9 @@ interface LeaderCardProps {
 
 function LeaderCard({ leader, language }: LeaderCardProps) {
   const hasContact = leader.mobile_number || leader.whatsapp_number;
+  const areaName = leader.category === 'area'
+    ? (language === 'en' ? leader.area_name_en : leader.area_name_kn)
+    : null;
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden
@@ -210,9 +213,16 @@ function LeaderCard({ leader, language }: LeaderCardProps) {
         <h3 className="font-semibold text-slate-800 line-clamp-1">
           {language === 'en' ? leader.name_en : leader.name_kn}
         </h3>
-        <p className="text-sm text-slate-500 line-clamp-1">
-          {language === 'en' ? leader.position_en : leader.position_kn}
-        </p>
+        {(leader.position_en || leader.position_kn) && (
+          <p className="text-sm text-slate-500 line-clamp-1">
+            {language === 'en' ? leader.position_en : leader.position_kn}
+          </p>
+        )}
+        {areaName && (
+          <p className="text-xs text-slate-500 mt-0.5 line-clamp-1">
+            {areaName}
+          </p>
+        )}
         {hasContact && (
           <div className="flex justify-center gap-2 mt-2">
             {leader.mobile_number && (
