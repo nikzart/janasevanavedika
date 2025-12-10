@@ -14,6 +14,7 @@ export default defineConfig({
       },
       includeAssets: ['congress-logo.svg', 'ravi-avatar.png', 'admin-manifest.webmanifest'],
       manifest: {
+        id: '/',
         name: 'BRavi.Agaram',
         short_name: 'BRavi.Agaram',
         description: 'Apply for Karnataka Guarantee Schemes with B Ravi',
