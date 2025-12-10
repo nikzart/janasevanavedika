@@ -12,7 +12,7 @@ export default defineConfig({
       devOptions: {
         enabled: true
       },
-      includeAssets: ['congress-logo.svg', 'ravi-avatar.png'],
+      includeAssets: ['congress-logo.svg', 'ravi-avatar.png', 'admin-manifest.webmanifest'],
       manifest: {
         name: 'BRavi.Agaram',
         short_name: 'BRavi.Agaram',

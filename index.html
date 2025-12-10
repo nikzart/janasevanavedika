@@ -11,6 +11,20 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Kannada:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <title>B Ravi Janaseva Vedike</title>
+    <!-- Dynamic manifest based on route - must run before PWA plugin injection -->
+    <script>
+      (function() {
+        var isAdmin = window.location.pathname.startsWith('/admin');
+        // Remove any existing manifest links first
+        var existing = document.querySelector('link[rel="manifest"]');
+        if (existing) existing.remove();
+        // Add the appropriate manifest
+        var link = document.createElement('link');
+        link.rel = 'manifest';
+        link.href = isAdmin ? '/admin-manifest.webmanifest' : '/manifest.webmanifest';
+        document.head.appendChild(link);
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
